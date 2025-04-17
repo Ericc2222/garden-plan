@@ -1,0 +1,200 @@
+/* Dashboard Styles */
+
+/* Dashboard Layout */
+.dashboard-content {
+    padding: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-welcome {
+    margin-bottom: var(--spacing-xl);
+}
+
+.current-date {
+    color: var(--gray-600);
+    margin-top: var(--spacing-xs);
+}
+
+/* Action Cards */
+.action-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.card {
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-icon {
+    font-size: 24px;
+    margin-bottom: var(--spacing-md);
+}
+
+.new-plan-card {
+    border-left: 4px solid var(--primary);
+}
+
+.recent-plans-card {
+    border-left: 4px solid var(--info);
+}
+
+.recent-plans-list {
+    margin: var(--spacing-md) 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.plan-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.plan-item:last-child {
+    border-bottom: none;
+}
+
+.plan-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.plan-date {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+}
+
+/* Dashboard Widgets */
+.dashboard-widgets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.widget {
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.widget h3 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Weather Widget */
+.weather-content {
+    min-height: 150px;
+}
+
+.current-weather {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.temp {
+    font-size: var(--font-size-3xl);
+    font-weight: 600;
+    margin-right: var(--spacing-md);
+}
+
+.condition {
+    font-size: var(--font-size-lg);
+}
+
+.weather-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.detail {
+    background-color: var(--gray-100);
+    padding: 4px 8px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+}
+
+.forecast {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+}
+
+.forecast-day {
+    text-align: center;
+    font-size: var(--font-size-sm);
+}
+
+.day {
+    font-weight: 500;
+}
+
+/* Planting Calendar */
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    background-color: var(--gray-50);
+}
+
+.plant-icon {
+    font-size: 20px;
+    margin-right: var(--spacing-sm);
+}
+
+.plant-info h4 {
+    margin: 0;
+    font-size: var(--font-size-md);
+}
+
+.plant-info p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+}
+
+/* Eco Score Widget */
+.eco-score-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+}
+
+.score-icon {
+    font-size: 40px;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .dashboard-content {
+        padding: var(--spacing-md);
+    }
+    
+    .action-cards,
+    .dashboard-widgets {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Garden Planner</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/planner.css">
+    
+    <style>
+    /* Critical garden grid styles to ensure visibility */
+    #garden-grid {
+        display: grid !important;
+        grid-gap: 4px !important;
+        background-color: #EEEEEE !important;
+        padding: 10px !important;
+        margin: 20px auto !important;
+        max-width: 90% !important;
+        border: 1px solid #CCCCCC !important;
+    }
+    
+    .garden-cell {
+        background-color: #FFFFFF !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 1px solid #E0E0E0 !important;
+    }
+    
+    .garden-cell:hover {
+        border-color: #4CAF50 !important;
+    }
+    
+    .garden-grid-container {
+        padding: 20px !important;
+        overflow: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        min-height: 400px !important;
+    }
+    
+    .planner-layout {
+        display: flex !important;
+        min-height: calc(100vh - 60px) !important;
+    }
+    
+    .planner-sidebar, .details-sidebar {
+        min-width: 240px !important;
+        background-color: #FFFFFF !important;
+    }
+    
+    .garden-area {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    </style>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app-container">
+        <!-- User Profile Setup Screen (First-time users) -->
+        <section id="profile-setup-screen" class="screen">
+            <div class="profile-setup-container">
+                <h1>Welcome to Smart Garden Planner</h1>
+                <p class="subtitle">Let's set up your profile to create custom garden plans for your location.</p>
+                
+                <form id="profile-setup-form">
+                    <div class="form-section">
+                        <h2>Your Location</h2>
+                        <div class="input-group">
+                            <label for="zip-code">ZIP/Postal Code</label>
+                            <div class="input-with-button">
+                                <input type="text" id="zip-code" placeholder="e.g., 90210" required>
+                                <button type="button" id="locate-btn" class="btn">Find Zone</button>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="hardiness-zone">Or Select Hardiness Zone</label>
+                            <select id="hardiness-zone" required>
+                                <option value="" disabled selected>Select Zone</option>
+                                <option value="1">Zone 1</option>
+                                <option value="2">Zone 2</option>
+                                <option value="3">Zone 3</option>
+                                <option value="4">Zone 4</option>
+                                <option value="5">Zone 5</option>
+                                <option value="6">Zone 6</option>
+                                <option value="7">Zone 7</option>
+                                <option value="8">Zone 8</option>
+                                <option value="9">Zone 9</option>
+                                <option value="10">Zone 10</option>
+                                <option value="11">Zone 11</option>
+                                <option value="12">Zone 12</option>
+                                <option value="13">Zone 13</option>
+                            </select>
+                        </div>
+                        
+                        <div id="zone-info" class="info-box hidden">
+                            <h4>Your Zone: <span id="zone-display"></span></h4>
+                            <p id="zone-description"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Garden Preferences</h2>
+                        <div class="input-group">
+                            <label for="soil-type">Default Soil Type</label>
+                            <select id="soil-type">
+                                <option value="loam" selected>Loam</option>
+                                <option value="clay">Clay</option>
+                                <option value="sandy">Sandy</option>
+                                <option value="silt">Silt</option>
+                                <option value="chalky">Chalky</option>
+                                <option value="peaty">Peaty</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="sun-exposure">Default Sun Exposure</label>
+                            <select id="sun-exposure">
+                                <option value="full">Full Sun (6+ hrs)</option>
+                                <option value="partial" selected>Partial Sun (4-6 hrs)</option>
+                                <option value="shade">Partial Shade (2-4 hrs)</option>
+                                <option value="full-shade">Full Shade (&lt; 2 hrs)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="gardening-goals">Gardening Goals</label>
+                            <select id="gardening-goals" multiple>
+                                <option value="food" selected>Grow Food</option>
+                                <option value="flowers">Grow Flowers</option>
+                                <option value="pollinators">Attract Pollinators</option>
+                                <option value="native">Grow Native Plants</option>
+                                <option value="low-maintenance">Low Maintenance</option>
+                                <option value="eco-friendly">Eco-Friendly</option>
+                            </select>
+                            <p class="hint">Hold Ctrl/Cmd to select multiple</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Experience Level</h2>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="beginner" name="experience" value="beginner" checked>
+                                <label for="beginner">Beginner</label>
+                                <p class="hint">I'm new to gardening or want extra guidance</p>
+                            </div>
+                            
+                            <div class="radio-option">
+                                <input type="radio" id="intermediate" name="experience" value="intermediate">
+                                <label for="intermediate">Intermediate</label>
+                                <p class="hint">I have some gardening experience</p>
+                            </div>
+                            
+                            <div class="radio-option">
+                                <input type="radio" id="expert" name="experience" value="expert">
+                                <label for="expert">Expert</label>
+                                <p class="hint">I'm an experienced gardener</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Personal Information</h2>
+                        <div class="input-group">
+                            <label for="gardener-name">Your Name (Optional)</label>
+                            <input type="text" id="gardener-name" placeholder="Enter your name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" id="save-profile-btn" class="btn primary">Save Profile</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Dashboard Screen (Home) -->
+        <section id="dashboard-screen" class="screen hidden">
+            <header class="app-header">
+                <div class="logo">🌿 Smart Garden Planner</div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" class="active">Dashboard</a></li>
+                        <li><a href="#">My Plans</a></li>
+                        <li><a href="#">Plant Library</a></li>
+                        <li><a href="#">Settings</a></li>
+                    </ul>
+                </nav>
+                <div class="user-menu">
+                    <div class="user-zone">Zone <span id="header-zone">6</span></div>
+                    <button class="profile-button">
+                        <span class="user-initial">E</span>
+                    </button>
+                </div>
+            </header>
+            
+            <main class="dashboard-content">
+                <section class="dashboard-welcome">
+                    <h1>Welcome, <span id="user-name">Gardener</span>!</h1>
+                    <p class="current-date" id="current-date"></p>
+                </section>
+                
+                <section class="action-cards">
+                    <div class="card new-plan-card">
+                        <div class="card-icon">➕</div>
+                        <h2>Create New Garden Plan</h2>
+                        <p>Design a new garden layout from scratch</p>
+                        <button id="create-new-plan-btn" class="btn primary">Create Plan</button>
+                    </div>
+                    
+                    <div class="card recent-plans-card">
+                        <div class="card-icon">📝</div>
+                        <h2>Recent Plans</h2>
+                        <div class="recent-plans-list">
+                            <p class="empty-state">No recent plans. Create one to get started!</p>
+                            <!-- Recent plans will be listed here -->
+                        </div>
+                        <button id="view-all-plans-btn" class="btn secondary">View All Plans</button>
+                    </div>
+                </section>
+                
+                <section class="dashboard-widgets">
+                    <div class="widget weather-widget">
+                        <h3>Local Weather</h3>
+                        <div class="weather-content" id="weather-content">
+                            <p class="loading">Loading weather data...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="widget planting-calendar">
+                        <h3>What to Plant Now</h3>
+                        <div id="planting-suggestions">
+                            <div class="suggestion-item">
+                                <div class="plant-icon">🥕</div>
+                                <div class="plant-info">
+                                    <h4>Carrots</h4>
+                                    <p>Great time to plant in your zone</p>
+                                </div>
+                            </div>
+                            <div class="suggestion-item">
+                                <div class="plant-icon">🥬</div>
+                                <div class="plant-info">
+                                    <h4>Lettuce</h4>
+                                    <p>Perfect for early spring</p>
+                                </div>
+                            </div>
+                            <div class="suggestion-item">
+                                <div class="plant-icon">🌼</div>
+                                <div class="plant-info">
+                                    <h4>Marigolds</h4>
+                                    <p>Plant now for summer blooms</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget eco-score-widget">
+                        <h3>Garden Eco Score</h3>
+                        <div class="eco-score-display">
+                            <div class="score-icon">🌱</div>
+                            <p>Create your first garden plan to receive an eco score.</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </section>
+
+        <!-- Garden Planner Screen -->
+        <section id="planner-screen" class="screen hidden">
+            <header class="app-header">
+                <div class="logo">🌿 Garden Planner</div>
+                
+                <div class="plan-tabs" id="plan-tabs">
+                    <!-- Plan tabs will be added dynamically -->
+                    <button class="tab active">Untitled Plan</button>
+                    <button class="new-tab">+</button>
+                </div>
+                
+                <div class="planner-toolbar">
+                    <button id="save-plan-btn" class="toolbar-btn"><span class="icon">💾</span>Save</button>
+                    <button id="settings-btn" class="toolbar-btn"><span class="icon">⚙️</span>Settings</button>
+                    <div class="user-zone">Zone <span id="planner-zone">6</span></div>
+                </div>
+            </header>
+            
+            <div class="planner-layout">
+                <aside class="planner-sidebar">
+                    <div class="sidebar-tabs">
+                        <button class="sidebar-tab active" data-tab="plants">Plants</button>
+                        <button class="sidebar-tab" data-tab="zones">Zones</button>
+                        <button class="sidebar-tab" data-tab="insights">Insights</button>
+                    </div>
+                    
+                    <!-- Plants Tab -->
+                    <div class="sidebar-content active" id="plants-tab">
+                        <div class="search-container">
+                            <input type="text" placeholder="Search plants..." id="plant-search">
+                        </div>
+                        
+                        <div class="plant-filters">
+                            <select id="plant-filter">
+                                <option value="all" selected>All Plants</option>
+                                <option value="vegetables">Vegetables</option>
+                                <option value="herbs">Herbs</option>
+                                <option value="flowers">Flowers</option>
+                                <option value="fruits">Fruits</option>
+                                <option value="native">Native Plants</option>
+                                <option value="recommended">Recommended for Zone</option>
+                            </select>
+                        </div>
+                        
+                        <div class="plant-list">
+                            <!-- Plants will be added dynamically -->
+                            <div class="plant-item" draggable="true" data-plant-id="tomato">
+                                <div class="plant-icon">🍅</div>
+                                <div class="plant-name">Tomato</div>
+                                <button class="quick-add-btn" title="Add to garden">+</button>
+                            </div>
+                            <div class="plant-item" draggable="true" data-plant-id="carrot">
+                                <div class="plant-icon">🥕</div>
+                                <div class="plant-name">Carrot</div>
+                                <button class="quick-add-btn" title="Add to garden">+</button>
+                            </div>
+                            <div class="plant-item" draggable="true" data-plant-id="lettuce">
+                                <div class="plant-icon">🥬</div>
+                                <div class="plant-name">Lettuce</div>
+                                <button class="quick-add-btn" title="Add to garden">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Zones Tab -->
+                    <div class="sidebar-content" id="zones-tab">
+                        <h3>Garden Zones</h3>
+                        <p>Define microzones within your garden for different conditions.</p>
+                        
+                        <div class="zone-tools">
+                            <button class="btn secondary">Add Zone</button>
+                        </div>
+                        
+                        <div class="zone-list">
+                            <div class="zone-item">
+                                <div class="zone-color" style="background-color: #a2ccb6;"></div>
+                                <div class="zone-info">
+                                    <h4>Default</h4>
+                                    <p>Loam soil, Partial Sun</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Insights Tab -->
+                    <div class="sidebar-content" id="insights-tab">
+                        <h3>Garden Insights</h3>
+                        
+                        <div class="insight-card">
+                            <h4>Plant Count</h4>
+                            <div class="insight-value">0 plants</div>
+                        </div>
+                        
+                        <div class="insight-card">
+                            <h4>Estimated Harvest</h4>
+                            <div class="insight-value">0 lbs</div>
+                        </div>
+                        
+                        <div class="insight-card">
+                            <h4>Maintenance Time</h4>
+                            <div class="insight-value">0 hrs/week</div>
+                        </div>
+                        
+                        <div class="insight-card">
+                            <h4>Eco Score</h4>
+                            <div class="insight-value">
+                                <div class="eco-rating">🌱</div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                
+                <main class="garden-area">
+                    <div class="garden-controls">
+                        <div class="garden-size">
+                            <label for="garden-width">Width:</label>
+                            <input type="number" id="garden-width" min="1" max="20" value="10">
+                            
+                            <label for="garden-height">Height:</label>
+                            <input type="number" id="garden-height" min="1" max="20" value="10">
+                            
+                            <button id="resize-garden-btn" class="btn mini">Resize</button>
+                        </div>
+                        
+                        <div class="garden-view-controls">
+                            <button class="btn mini active">All Seasons</button>
+                            <button class="btn mini">Spring</button>
+                            <button class="btn mini">Summer</button>
+                            <button class="btn mini">Fall</button>
+                            <button class="btn mini">Winter</button>
+                        </div>
+                    </div>
+                    
+                    <div class="garden-grid-container">
+                        <div id="garden-grid">
+                            <!-- Garden grid cells will be added dynamically -->
+                        </div>
+                    </div>
+                </main>
+                
+                <aside class="details-sidebar">
+                    <div class="details-placeholder">
+                        <p>Select a plant or garden cell to see details</p>
+                    </div>
+                    
+                    <div class="plant-details hidden">
+                        <h3 id="detail-plant-name">Plant Name</h3>
+                        <div class="detail-image">
+                            <div class="plant-preview">🍅</div>
+                        </div>
+                        
+                        <div class="detail-info">
+                            <div class="detail-row">
+                                <div class="detail-label">Type:</div>
+                                <div class="detail-value" id="detail-plant-type">Vegetable</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Sun Needs:</div>
+                                <div class="detail-value" id="detail-plant-sun">Full Sun</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Water Needs:</div>
+                                <div class="detail-value" id="detail-plant-water">Medium</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Spacing:</div>
+                                <div class="detail-value" id="detail-plant-spacing">12-18 inches</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Time to Harvest:</div>
+                                <div class="detail-value" id="detail-plant-time">70-80 days</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Companions:</div>
+                                <div class="detail-value" id="detail-companions">Basil, Marigold</div>
+                            </div>
+                        </div>
+                        
+                        <div class="plant-notes">
+                            <h4>Notes</h4>
+                            <textarea id="plant-notes" placeholder="Add notes about this plant..."></textarea>
+                        </div>
+                        
+                        <div class="plant-actions">
+                            <button class="btn danger">Remove Plant</button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+        
+        <!-- Simulation Screen -->
+        <section id="simulation-screen" class="screen hidden">
+            <header class="app-header">
+                <div class="logo">🌿 Garden Simulation</div>
+                <button id="back-to-planner-btn" class="btn">Back to Planner</button>
+            </header>
+            
+            <div class="simulation-container">
+                <div class="simulation-controls">
+                    <button id="start-simulation-btn" class="btn primary">Start Simulation</button>
+                    <div class="simulation-speed">
+                        <label for="speed-slider">Speed:</label>
+                        <input type="range" id="speed-slider" min="1" max="10" value="5">
+                    </div>
+                    <div class="simulation-time">
+                        <span id="simulation-date">Spring, Week 1</span>
+                    </div>
+                </div>
+                
+                <div class="simulation-view">
+                    <div id="simulation-grid">
+                        <!-- Simulation will be displayed here -->
+                    </div>
+                </div>
+                
+                <div class="simulation-sidebar">
+                    <div class="simulation-events">
+                        <h3>Simulation Events</h3>
+                        <div id="event-log">
+                            <p class="instruction">Start the simulation to see events</p>
+                            <!-- Events will be logged here -->
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-results hidden">
+                        <h3>Final Results</h3>
+                        <div class="result-item">
+                            <div class="result-label">Total Yield:</div>
+                            <div class="result-value" id="result-yield">0 lbs</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Time Investment:</div>
+                            <div class="result-value" id="result-time">0 hrs</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Success Rate:</div>
+                            <div class="result-value" id="result-success">0%</div>
+                        </div>
+                        <button id="save-results-btn" class="btn primary">Save Results</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Core JavaScript files -->
+    <script src="js/constants.js"></script>
+    <script src="js/data/plants.js"></script>
+    <script src="js/data/zones.js"></script>
+    <script src="js/models/profile.js"></script>
+    <script src="js/models/garden.js"></script>
+    <script src="js/ui/dashboard.js"></script>
+    <script src="js/ui/planner.js"></script>
+    <script src="js/ui/simulation.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- Direct garden grid initialization for testing -->
+    <script>
+    // Additional initialization to ensure the garden grid appears
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add a direct initialization for clicking the Create Plan button
+        const createPlanBtn = document.getElementById('create-new-plan-btn');
+        if (createPlanBtn) {
+            console.log("Adding additional click handler to Create Plan button");
+            createPlanBtn.addEventListener('click', function() {
+                console.log("Create Plan button clicked");
+                
+                // Show the planner screen directly
+                const plannerScreen = document.getElementById('planner-screen');
+                if (plannerScreen) {
+                    // Hide all screens first
+                    document.querySelectorAll('.screen').forEach(function(screen) {
+                        screen.style.display = 'none';
+                        screen.classList.add('hidden');
+                    });
+                    
+                    // Show planner screen
+                    plannerScreen.style.display = 'block';
+                    plannerScreen.classList.remove('hidden');
+                    
+                    // Initialize planner if available
+                    if (window.PlannerController) {
+                        console.log("Directly initializing planner");
+                        setTimeout(function() {
+                            window.PlannerController.initialize(
+                                window.GardenApp ? window.GardenApp.profile : null,
+                                window.GardenApp ? window.GardenApp.garden : null
+                            );
+                        }, 10);
+                    }
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>

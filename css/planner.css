@@ -1,0 +1,661 @@
+/* Garden Planner Screen Styles */
+
+/* Planner Layout */
+.planner-layout {
+    display: flex;
+    height: calc(100vh - 60px); /* Account for header */
+    width: 100%;
+}
+
+/* Sidebar Styles */
+.planner-sidebar {
+    width: 300px;
+    background-color: var(--surface);
+    border-right: 1px solid var(--gray-200);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sidebar-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.sidebar-tab {
+    flex: 1;
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-700);
+    border-bottom: 2px solid transparent;
+    transition: all var(--transition-fast);
+}
+
+.sidebar-tab:hover {
+    color: var(--primary);
+    background-color: var(--gray-50);
+}
+
+.sidebar-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: 500;
+}
+
+.sidebar-content {
+    display: none;
+    flex-direction: column;
+    padding: var(--spacing-md);
+    overflow-y: auto;
+    height: 100%;
+}
+
+.sidebar-content.active {
+    display: flex;
+}
+
+/* Plant Library */
+.search-container {
+    margin-bottom: var(--spacing-md);
+}
+
+.plant-filters {
+    margin-bottom: var(--spacing-md);
+}
+
+.plant-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    overflow-y: auto;
+}
+
+.plant-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background-color: var(--surface);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.plant-item:hover {
+    background-color: var(--gray-100);
+    border-color: var(--gray-300);
+}
+
+.plant-item.selected {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.plant-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background-color: var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--spacing-sm);
+    font-size: 20px;
+}
+
+.plant-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.quick-add-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary);
+    font-size: 18px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+}
+
+.quick-add-btn:hover {
+    background-color: var(--primary-light);
+}
+
+/* Garden Area */
+.garden-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background);
+    overflow: hidden;
+}
+
+.garden-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.garden-size {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.garden-size input {
+    width: 60px;
+}
+
+.garden-view-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.garden-grid-container {
+    flex: 1;
+    padding: var(--spacing-md);
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#garden-grid {
+    display: grid !important;
+    grid-gap: 4px !important;
+    background-color: #EEEEEE !important;
+    padding: 10px !important;
+    margin: 20px auto !important;
+    max-width: 90% !important;
+    border: 1px solid #CCCCCC !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.garden-cell {
+    background-color: #FFFFFF !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    cursor: pointer !important;
+    border: 1px solid #E0E0E0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    transition: all 150ms ease-in-out !important;
+}
+
+.garden-cell:hover {
+    border-color: var(--primary);
+}
+
+.garden-cell.selected {
+    border: 2px solid var(--primary);
+}
+
+.garden-cell.drag-over {
+    background-color: var(--primary-light);
+}
+
+.garden-cell.highlight {
+    animation: highlight-pulse 2s;
+}
+
+@keyframes highlight-pulse {
+    0% { background-color: var(--surface); }
+    50% { background-color: var(--primary-light); }
+    100% { background-color: var(--surface); }
+}
+
+.plant-visualization {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+}
+
+.plant-visible {
+    opacity: 1;
+}
+
+.plant-dormant {
+    opacity: 0.3;
+}
+
+.plant-seedling {
+    border-radius: 30%;
+    width: 30%;
+    height: 30%;
+}
+
+.plant-growing {
+    border-radius: 40%;
+    width: 50%;
+    height: 50%;
+}
+
+.plant-mature {
+    border-radius: 50%;
+    width: 80%;
+    height: 80%;
+}
+
+.plant-fruiting::after {
+    content: "";
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    background-color: var(--accent);
+    border-radius: 50%;
+    top: 10%;
+    right: 10%;
+}
+
+/* Soil styles */
+.soil-sandy {
+    background-color: rgba(230, 200, 140, 0.2);
+}
+
+.soil-clay {
+    background-color: rgba(183, 103, 70, 0.2);
+}
+
+.soil-loamy {
+    background-color: rgba(139, 69, 19, 0.2);
+}
+
+.soil-peaty {
+    background-color: rgba(78, 53, 36, 0.2);
+}
+
+.soil-chalky {
+    background-color: rgba(224, 221, 207, 0.2);
+}
+
+.soil-rich {
+    background-color: rgba(101, 67, 33, 0.2);
+}
+
+/* Sunlight styles */
+.sunlight-full::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 220, 0, 0.5);
+    border-radius: 50%;
+}
+
+.sunlight-partial::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 220, 0, 0.3);
+    border-radius: 50%;
+}
+
+.sunlight-shade::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(100, 100, 100, 0.3);
+    border-radius: 50%;
+}
+
+/* Moisture styles */
+.moisture-dry {
+    background-image: linear-gradient(45deg, transparent 95%, var(--gray-300) 95%);
+    background-size: 10px 10px;
+}
+
+.moisture-moist {
+    background-image: linear-gradient(45deg, transparent 97%, rgba(0, 120, 255, 0.2) 97%);
+    background-size: 10px 10px;
+}
+
+.moisture-wet {
+    background-image: linear-gradient(45deg, transparent 90%, rgba(0, 120, 255, 0.4) 90%);
+    background-size: 10px 10px;
+}
+
+/* Details Sidebar */
+.details-sidebar {
+    width: 300px;
+    background-color: var(--surface);
+    border-left: 1px solid var(--gray-200);
+    padding: var(--spacing-md);
+    overflow-y: auto;
+}
+
+.details-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--gray-600);
+    font-style: italic;
+    text-align: center;
+}
+
+.plant-details .detail-image {
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    justify-content: center;
+}
+
+.plant-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+}
+
+.detail-info {
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+}
+
+.detail-row {
+    display: flex;
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    flex: 1;
+    font-weight: 500;
+    color: var(--gray-700);
+}
+
+.detail-value {
+    flex: 2;
+}
+
+.plant-notes {
+    margin-bottom: var(--spacing-md);
+}
+
+.plant-notes textarea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+}
+
+.plant-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Zone Tools */
+.zone-tools {
+    margin-bottom: var(--spacing-md);
+}
+
+.zone-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.zone-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.zone-item:hover {
+    background-color: var(--gray-100);
+}
+
+.zone-item.selected {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.zone-color {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    margin-right: var(--spacing-sm);
+}
+
+.zone-info {
+    flex: 1;
+}
+
+.zone-info h4 {
+    margin: 0;
+    font-size: var(--font-size-sm);
+}
+
+.zone-info p {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    color: var(--gray-600);
+}
+
+/* Insights Tab */
+.insight-card {
+    background-color: var(--surface);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.insight-card h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-md);
+    color: var(--gray-800);
+}
+
+.insight-value {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* Suggestion Lists */
+.suggestion-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background-color: var(--surface);
+}
+
+.suggestion-item.in-season {
+    border-color: var(--primary-light);
+    background-color: rgba(200, 230, 201, 0.2);
+}
+
+.suggestion-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    margin-right: var(--spacing-sm);
+}
+
+.suggestion-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.in-season-badge {
+    font-size: var(--font-size-xs);
+    background-color: var(--primary);
+    color: white;
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+    margin-right: var(--spacing-sm);
+}
+
+/* Companions List */
+.companion-items,
+.antagonist-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.companion-item,
+.antagonist-item {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: var(--font-size-sm);
+    background-color: var(--gray-100);
+    cursor: pointer;
+}
+
+.companion-item:hover {
+    background-color: var(--primary-light);
+}
+
+.antagonist-item:hover {
+    background-color: var(--accent-light);
+}
+
+.companion-icon,
+.antagonist-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+/* Seasonal Chart */
+.month-chart {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.month {
+    padding: 4px;
+    font-size: var(--font-size-xs);
+    text-align: center;
+    background-color: var(--gray-100);
+    border-radius: var(--radius-sm);
+}
+
+.month.planting {
+    background-color: var(--primary-light);
+}
+
+.month.harvest {
+    background-color: var(--accent-light);
+}
+
+.month.plant-harvest {
+    background-image: linear-gradient(45deg, var(--primary-light) 50%, var(--accent-light) 50%);
+}
+
+.chart-legend {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-xs);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+}
+
+.color-box {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    border-radius: var(--radius-sm);
+}
+
+.color-box.planting {
+    background-color: var(--primary-light);
+}
+
+.color-box.harvest {
+    background-color: var(--accent-light);
+}
+
+.color-box.plant-harvest {
+    background-image: linear-gradient(45deg, var(--primary-light) 50%, var(--accent-light) 50%);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .planner-layout {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .planner-sidebar,
+    .details-sidebar {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .garden-area {
+        order: -1;
+        min-height: 60vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .garden-controls {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: flex-start;
+    }
+    
+    .garden-view-controls {
+        width: 100%;
+        overflow-x: auto;
+    }
+}
